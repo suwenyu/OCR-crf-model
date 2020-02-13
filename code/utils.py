@@ -1,9 +1,10 @@
 def read_data(filename):
     # read data from file, return list of tuples, 
-    # and each tuple contain word(string) and img features([128, 1]*len(word))
+    # and each tuple contains word(list of chars) and img features([128, 1]*len(word))
+    # ex. (['a', 'k', 'e'], [[1, 0, 0 ... ], [0, 1, 0 ...], [0, 0, 0 ...]])
     data = []
     tmp_id = 1
-    label = ""
+    label = []
     features = []
     
     f = open(filename, 'r')
@@ -15,10 +16,10 @@ def read_data(filename):
         if word_id != tmp_id:
             data.append((label, features))
             tmp_id = word_id
-            label = ""
+            label = []
             features = []
 
-        label += letter
+        label.append(letter)
         features.append(feature)
     return data
 
