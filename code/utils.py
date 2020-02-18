@@ -1,4 +1,10 @@
-def read_data(filename):
+import numpy as np
+import string
+
+letter_dict = dict(zip(string.ascii_lowercase, range(0,26)))
+
+
+def read_data_seq(filename):
     # read data from file, return list of tuples, 
     # and each tuple contains word(list of chars) and img features([128, 1]*len(word))
     # ex. (['a', 'k', 'e'], [[1, 0, 0 ... ], [0, 1, 0 ...], [0, 0, 0 ...]])
@@ -24,6 +30,42 @@ def read_data(filename):
     return data
 
 
+def read_data_struct():
+    label, features = [], []
+    
+    f = open('../data/train.txt', 'r')
+    for line in f:
+        line_list = line.rstrip().split(' ')
+        _id, letter, word_id = line_list[0], line_list[1], int(line_list[3])
+        feature = line_list[5:]   
+
+        features.append(feature)
+        label.append([letter_dict[letter], word_id])
+
+    features = np.array(features, dtype=np.float)
+    return label, features
+
+
+def load_decode_input():
+    f = open('../data/decode_input.txt', 'r')
+    inp_list = []
+    for line in f:
+        inp_list.append(line.rstrip())
+    # print(inp_list)
+    
+    X = np.array(inp_list[:100 * 128], dtype=np.float64).reshape(100, 128)
+    W = np.array(inp_list[100 * 128:100 * 128 + 26 * 128], dtype=np.float64).reshape(26, 128)
+
+    T = np.array(inp_list[-26*26:], dtype=np.float64).reshape(26, 26)
+    # original data is stored in column vector (swap by column and row)
+    T = np.swapaxes(T, 0, 1)
+    
+    return X, W, T
+
+
 if __name__ == '__main__':
-    train_data = read_data('../data/test.txt')
-    test_data = read_data('../data/test.txt')
+    # train_data = read_data('../data/test.txt')
+    # test_data = read_data('../data/test.txt')
+    load_decode_input()
+    # datax, datay = read_data_struct()
+    # print(datay)
