@@ -2,3 +2,4 @@ data
 latex
 
 .DS_Store
+code/__pycache__/
