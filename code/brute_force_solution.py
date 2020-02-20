@@ -2,12 +2,20 @@ import numpy as np
 import utils, compute
 from itertools import combinations_with_replacement
 
+def find_permutations(letters, m):
+    permuts = [[]]
+    for i in range(0, m):
+        permuts_tmp = []
 
-def get_combination(letters, m):
-    comb = combinations_with_replacement(letters, m)
-    # for i in comb:
-    #     i = list(i)
-    return [list(i) for i in comb]
+        for j in permuts:
+            for l in letters:
+                tmp = j[:]
+                tmp += [l]
+
+                permuts_tmp.append(tmp)
+        permuts = permuts_tmp
+
+    return permuts
 
 
 def find_max(x, combs, W, T):
@@ -27,9 +35,9 @@ if __name__ == "__main__":
     letters = [i for i in range(0, 26)]
     
     m = 5
-    combs = get_combination(letters, m)
+    permuts = find_permutations(letters, m)
     
-    print(find_max(features[:3], combs, W, T))
+    print(find_max(features[:5], permuts, W, T))
 
 
 
