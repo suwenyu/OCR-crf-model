@@ -20,13 +20,14 @@ def read_data_seq(filename):
         feature = line_list[5:]
         
         if word_id != tmp_id:
-            data.append((label, features))
+            data.append([label, features])
             tmp_id = word_id
             label = []
             features = []
 
-        label.append(letter)
-        features.append(feature)
+        label.append(letter_dict[letter])
+        features.append(np.array(feature, dtype=float))
+    
     return data
 
 
@@ -64,8 +65,8 @@ def load_decode_input():
 
 
 if __name__ == '__main__':
-    # train_data = read_data('../data/test.txt')
-    # test_data = read_data('../data/test.txt')
+    train_data = read_data_seq('../data/train.txt')
+    # test_data = read_data_seq('../data/test.txt')
     load_decode_input()
     # datax, datay = read_data_struct()
     # print(datay)
