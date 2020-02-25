@@ -20,6 +20,8 @@ def read_data_seq(filename):
         feature = line_list[5:]
         
         if word_id != tmp_id:
+            label = np.array(label, dtype=np.int)
+            features = np.array(features, dtype=np.float)
             data.append([label, features])
             tmp_id = word_id
             label = []
@@ -63,10 +65,24 @@ def load_decode_input():
     
     return X, W, T
 
+def read_model():
+#function to read model for 2a
+    f = open('../data/model.txt', 'r')
+    line_list = []    
+    for line in f:
+        line = line.rstrip()
+        line_list.append(line)
+
+
+    W = np.array(line_list[:26*128], dtype=float).reshape(26, 128)
+    T = np.array(line_list[26*128:], dtype=float).reshape(26, 26)
+    T = np.swapaxes(T, 0, 1)
+    return W, T
+
 
 if __name__ == '__main__':
     train_data = read_data_seq('../data/train.txt')
-    # test_data = read_data_seq('../data/test.txt')
-    load_decode_input()
+    test_data = read_data_seq('../data/test.txt')
+    # print(read_model())
     # datax, datay = read_data_struct()
     # print(datay)

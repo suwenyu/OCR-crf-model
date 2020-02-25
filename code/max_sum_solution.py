@@ -39,7 +39,7 @@ def max_sum(X, W, T):
 
 if __name__ == "__main__":
     X, W, T = utils.load_decode_input()
-    
+
     for i in max_sum(X, W, T):
         print (i+1)
     
