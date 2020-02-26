@@ -80,8 +80,8 @@ def read_model():
     return W, T
 
 
-def load_model_params():
-    file = open('../data/model.txt', 'r')
+def load_model_params(filename):
+    file = open(filename, 'r')
     params = []
 
     for line in file:

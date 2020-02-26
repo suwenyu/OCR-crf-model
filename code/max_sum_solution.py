@@ -24,7 +24,7 @@ def max_sum(X, W, T):
         tmp[i] = np.dot(W[i], X[-1]) + l[-1, i]
 
     y_ans[-1] = np.argmax(tmp)
-    print(tmp[y_ans[-1]])
+    # print(tmp[y_ans[-1]])
 
 
     # y∗_i−1 = argmax_{yi−1}{ <wyi−1, xi−1> + T_{yi−1,y∗i} + li−1(yi−1) }
