@@ -22,11 +22,17 @@ class crf:
         # equation (13)
         for i in range(1, self.n):
             tmp = alpha[i - 1] + self.T
+            tmp_max = np.max(tmp, axis=1)
+            
+            # print(tmp_max)
+            tmp = (tmp.transpose() - tmp_max).transpose()
+
             tmp = np.exp(tmp + w_x[i - 1])
             # alpha_max = np.max(alpha, axis=1)
             # prepare V - V.max()
             # alpha = (alpha.transpose() - alpha_max).transpose()
-            alpha[i] = np.log(np.sum(tmp, axis=1))
+            alpha[i] = tmp_max + np.log(np.sum(tmp, axis=1))
+            # print(alpha[i])
             
             # for j in range(self.letter_size):
             #     for k in range(self.letter_size):
@@ -59,8 +65,12 @@ class crf:
         # print(w_x)
         for i in range(self.n-2, -1, -1):
             tmp = beta[i + 1] + self.T.transpose()
+
+            tmp_max = np.max(tmp, axis=1)
+            tmp = (tmp.transpose() - tmp_max).transpose()
+            # print(tmp)
             tmp = np.exp(tmp + w_x[i + 1])
-            beta[i] = np.log(np.sum(tmp, axis=1))
+            beta[i] = tmp_max + np.log(np.sum(tmp, axis=1))
 
             # for j in range(self.letter_size):
             #     for k in range(self.letter_size):
@@ -86,43 +96,45 @@ class crf:
         # print(beta)
         return beta, tmp, message
 
-    def cal_logz(self, tmp, alpha):
+    def compute_z(self, alpha):
         # equation (14)
-        tmp = np.add(np.matmul(self.W, self.X[-1]), alpha[-1])
-        M = np.max(tmp)
-        log_z = M + math.log(np.sum(np.exp(np.add(tmp, -1*M))))
+        # tmp = np.add(np.matmul(self.W, self.X[-1]), alpha[-1])
+        # M = np.max(tmp)
+        # log_z = M + math.log(np.sum(np.exp(np.add(tmp, -1*M))))
 
-        return log_z
-
+        # return log_z
+        # print(np.sum(np.exp(alpha[-1] + np.dot(self.X, self.W.T)[-1])))
+        return np.sum(np.exp(alpha[-1] + np.dot(self.X, self.W.T)[-1]))
 
     # checked
-    def log_prob(self):
+    def compute_log_prob(self):
         sum_num = compute.comput_prob(self.X, self.Y, self.W, self.T)
         
         alpha, tmp, message = self.forward()
-        log_z = self.cal_logz(tmp, alpha)
+        z = self.compute_z(alpha)
+        # print(z)
         # print(sum_num-log_z)
 
-        return sum_num - log_z
+        return np.log(sum_num / z)
 
 
     def forward_backward_prob(self):
 
         alpha, tmp, message = self.forward()
 
-        log_z = self.cal_logz(tmp, alpha)
+        # log_z = self.cal_logz(tmp, alpha)
 
         beta, tmp, message = self.backward()
         # print(beta)
-        return alpha, beta, log_z
+        return alpha, beta
 
 
-def w_grad(X, Y, W, T):
+def w_grad(X, Y, W, T, denom):
     letter_size = 26
     n = len(X)
 
     crf_model = crf(X, Y, W, T)
-    alpha, beta, log_z = crf_model.forward_backward_prob()
+    alpha, beta = crf_model.forward_backward_prob()
 
     grad = np.zeros((letter_size, 128))
 
@@ -133,15 +145,15 @@ def w_grad(X, Y, W, T):
     for i in range(n):
         grad[Y[i]] += X[i]
         
-        prob = np.add(alpha[i], beta[i])
-        prob = np.add(w_x[i], prob)
-        prob = np.add(-1*log_z, prob)
-        prob = np.exp(prob)
+        # prob = np.add(alpha[i], beta[i])
+        # prob = np.add(w_x[i], prob)
+        # prob = np.exp(prob)
 
 
         tmp = np.ones((26, 128)) * X[i]
         tmp = tmp.transpose()
-        tmp = tmp * prob
+        tmp = tmp * np.exp(alpha[i] + beta[i] + w_x[i]) / denom
+        # tmp = tmp * np.exp(prob) / denom
         # print(tmp.shape)
         grad -= tmp.transpose()
 
@@ -153,10 +165,12 @@ def w_grad(X, Y, W, T):
         # expect[:] = 0
 
     # print(grad.flatten())
+    # for i in grad:
+    #     print(i)
     return grad
 
 
-def t_grad(X, Y, W, T):
+def t_grad(X, Y, W, T, denom):
     n = len(X)
     letter_size = 26
     
@@ -165,24 +179,27 @@ def t_grad(X, Y, W, T):
 
     crf_model = crf(X, Y, W, T)
 
-    alpha, beta, log_z = crf_model.forward_backward_prob()
+    alpha, beta = crf_model.forward_backward_prob()
 
     for i in range(n - 1):
         for j in range(26):
-            tmp = np.exp(beta[i + 1][j] + alpha[i] + w_x[i + 1][j] + w_x[i] + T[j])
+            grad[j] -= np.exp(w_x[i] + T[j] + w_x[i + 1][j] + beta[i + 1][j] + alpha[i])
+            # tmp = np.exp(beta[i + 1][j] + alpha[i] + w_x[i + 1][j] + w_x[i] + T[j])
             # print(tmp)
-            grad[j] -= tmp
+            # grad[j] -= tmp
 
             # grad[j][j+1] = 
             # np.exp(w_x[i] + T.transpose()[j] + w_x[i + 1][j] )
 
-    alpha, tmp, message = crf_model.forward()
-    grad /= np.exp(crf_model.cal_logz(tmp, alpha))
+    # print(grad)
+    grad /= denom
 
     for i in range(n - 1):
         grad[Y[i]][Y[i+1]] += 1
 
     # print(grad)
+    # for i in grad:
+    #     print(i)
     return grad
 
 

@@ -5,7 +5,7 @@ import time
 from scipy.optimize import fmin_bfgs
 
 def read_data():
-    train_data = utils.read_data_seq('../data/train.txt')
+    train_data = utils.read_data_seq('../data/train_mini.txt')
     trainX, trainY = [], []
     for d in train_data:
         trainX.append(d[1])
@@ -28,13 +28,13 @@ def func(params, data, c):
     n = len(data)
     l2 = 1 / 2 * np.sum(params ** 2)
     log_loss = check_grad.compute_log_p_avg(params, data, n)
-    return -C * log_loss + l2_regularization
+    return -c * log_loss + l2
 
 def func_prime(params, data, c):
     n = len(data)
     loss_gradient = check_grad.gradient_avg(params, data, n)
     l2_gradient = params
-    return -C * loss_gradient + l2_gradient
+    return -c * loss_gradient + l2_gradient
 
 
 def ref_optimize(train_data, test_data, c, params):
@@ -47,13 +47,13 @@ def ref_optimize(train_data, test_data, c, params):
     print("Total time: ", end='')
     print(time.time() - start)
 
-    with open("result/" + 'solution' + ".txt", "w") as text_file:
+    with open("../result/" + 'solution' + ".txt", "w") as text_file:
         for i in out:
             text_file.write(str(i) + "\n")
 
 
 if __name__ == '__main__':
-    c = 1000
+    c = 10
 
     train_data, test_data, params = read_data()
     ref_optimize(train_data, test_data, c, params)

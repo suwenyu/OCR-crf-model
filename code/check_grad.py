@@ -10,7 +10,7 @@ def compute_log_p_avg(params, data, iterator):
 
     for i in range(iterator):
         crf_model = crf.crf(data[i][1], data[i][0], W, T)
-        total += crf_model.log_prob()
+        total += crf_model.compute_log_prob()
 
     # print(total)
     return total / (iterator)
@@ -21,8 +21,10 @@ def grad_word(data, W, T, i):
     alpha, tmp, message = crf_model.forward()
     beta, tmp, message = crf_model.backward()
 
-    w_grad = crf.w_grad(data[i][1], data[i][0], W, T)
-    t_grad = crf.t_grad(data[i][1], data[i][0], W, T)
+    denom = crf_model.compute_z(alpha)
+
+    w_grad = crf.w_grad(data[i][1], data[i][0], W, T, denom)
+    t_grad = crf.t_grad(data[i][1], data[i][0], W, T, denom)
 
     # print(w_grad.shape, t_grad.shape)
     return np.concatenate((w_grad.flatten(), t_grad.flatten()))
@@ -36,6 +38,8 @@ def gradient_avg(params, data, iterator):
     for i in range(iterator):
         total += grad_word(data, W, T, i)
     
+    # for i in total:
+    #     print(i)
     return total / (iterator)
 
 
