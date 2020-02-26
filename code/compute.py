@@ -21,5 +21,5 @@ def comput_prob(x, y, W, T):
 
     n = len(x)-1
     w_sum += np.dot(x[n], W[y[n]])
-
+    
     return w_sum + t_sum
