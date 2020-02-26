@@ -18,17 +18,17 @@ def read_data_seq(filename):
         line_list = line.rstrip().split(' ')
         _id, letter, word_id = line_list[0], line_list[1], int(line_list[3])
         feature = line_list[5:]
-        
-        if word_id != tmp_id:
+
+        label.append(letter_dict[letter])
+        features.append(np.array(feature, dtype=float))
+
+        if int(line_list[2]) < 0:
             label = np.array(label, dtype=np.int)
             features = np.array(features, dtype=np.float)
             data.append([label, features])
             tmp_id = word_id
             label = []
             features = []
-
-        label.append(letter_dict[letter])
-        features.append(np.array(feature, dtype=float))
     
     return data
 
@@ -88,6 +88,15 @@ def load_model_params():
         params.append(line.rstrip())
 
     return np.array(params, dtype=np.float)
+
+
+def extract_w(params):
+    return np.array(params[:26*128], dtype=float).reshape(26, 128)
+
+
+def extract_t(params):
+    return np.array(params[26*128:], dtype=float).reshape(26, 26)
+
 
 if __name__ == '__main__':
     train_data = read_data_seq('../data/train.txt')

@@ -26,22 +26,7 @@ def comput_prob(x, y, W, T):
 
 
 
-def matricize_W(params):
-    w = np.zeros((26, 128))
-
-    for i in range(26):
-        w[i] = params[128 * i: 128 * (i + 1)]
-
-    return w
 
 
-def matricize_Tij(params):
-    t_ij = np.zeros((26, 26))
 
-    index = 0
-    for i in range(26):
-        for j in range(26):
-            t_ij[j][i] = params[128 * 26 + index]
-            index += 1
 
-    return t_ij

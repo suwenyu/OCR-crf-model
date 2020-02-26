@@ -21,7 +21,7 @@ class crf:
         w_x = np.dot(self.X, self.W.T)
         # equation (13)
         for i in range(1, self.n):
-            tmp = alpha[i - 1] + self.T.transpose()
+            tmp = alpha[i - 1] + self.T
             tmp = np.exp(tmp + w_x[i - 1])
             # alpha_max = np.max(alpha, axis=1)
             # prepare V - V.max()
@@ -46,7 +46,7 @@ class crf:
             # 
             # alpha[i] = tmp
             # print(tmp)
-
+        # print(alpha)
         return alpha, tmp, message
         
 
@@ -58,7 +58,7 @@ class crf:
         w_x = np.dot(self.X, self.W.T)
         # print(w_x)
         for i in range(self.n-2, -1, -1):
-            tmp = beta[i + 1] + self.T
+            tmp = beta[i + 1] + self.T.transpose()
             tmp = np.exp(tmp + w_x[i + 1])
             beta[i] = np.log(np.sum(tmp, axis=1))
 
@@ -122,7 +122,7 @@ def w_grad(X, Y, W, T):
     n = len(X)
 
     crf_model = crf(X, Y, W, T)
-    fw, bw, log_z = crf_model.forward_backward_prob()
+    alpha, beta, log_z = crf_model.forward_backward_prob()
 
     grad = np.zeros((letter_size, 128))
 
@@ -133,7 +133,7 @@ def w_grad(X, Y, W, T):
     for i in range(n):
         grad[Y[i]] += X[i]
         
-        prob = np.add(fw[i], bw[i])
+        prob = np.add(alpha[i], beta[i])
         prob = np.add(w_x[i], prob)
         prob = np.add(-1*log_z, prob)
         prob = np.exp(prob)
@@ -169,8 +169,9 @@ def t_grad(X, Y, W, T):
 
     for i in range(n - 1):
         for j in range(26):
-            tmp = beta[i + 1][j] + alpha[i] + w_x[i + 1][j] + w_x[i] + T.transpose()[j]
-            grad[j] = tmp
+            tmp = np.exp(beta[i + 1][j] + alpha[i] + w_x[i + 1][j] + w_x[i] + T[j])
+            # print(tmp)
+            grad[j] -= tmp
 
             # grad[j][j+1] = 
             # np.exp(w_x[i] + T.transpose()[j] + w_x[i + 1][j] )
@@ -181,6 +182,7 @@ def t_grad(X, Y, W, T):
     for i in range(n - 1):
         grad[Y[i]][Y[i+1]] += 1
 
+    # print(grad)
     return grad
 
 
@@ -194,7 +196,7 @@ if __name__ == "__main__":
     # crf_model.forward_backward_prob()
     # print(T.shape)
 
-    t_grad(data[0][1], data[0][0], W, T)
+    # t_grad(data[0][1], data[0][0], W, T)
 
 
 
