@@ -52,7 +52,7 @@ def check_gradient(data, params):
 if __name__ == "__main__":
 
     data = utils.read_data_seq('../data/train.txt')
-    params = utils.load_model_params()
+    params = utils.load_model_params('../data/model.txt')
     # print(params.shape)
 
     # crf_model = crf.crf(X, Y, W, T)
