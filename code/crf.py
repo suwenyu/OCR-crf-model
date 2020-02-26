@@ -101,7 +101,7 @@ class crf:
         
         alpha, tmp, message = self.forward()
         log_z = self.cal_logz(tmp, alpha)
-        # print(sum_num, log_z)
+        # print(sum_num-log_z)
 
         return sum_num - log_z
 
@@ -179,8 +179,6 @@ def t_grad(X, Y, W, T):
     grad /= np.exp(crf_model.cal_logz(tmp, alpha))
 
     for i in range(n - 1):
-        # tmp = Y[i]
-        # tmp += 26 * Y[i + 1]
         grad[Y[i]][Y[i+1]] += 1
 
     return grad

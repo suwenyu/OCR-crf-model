@@ -80,6 +80,15 @@ def read_model():
     return W, T
 
 
+def load_model_params():
+    file = open('../data/model.txt', 'r')
+    params = []
+
+    for line in file:
+        params.append(line.rstrip())
+
+    return np.array(params, dtype=np.float)
+
 if __name__ == '__main__':
     train_data = read_data_seq('../data/train.txt')
     test_data = read_data_seq('../data/test.txt')
