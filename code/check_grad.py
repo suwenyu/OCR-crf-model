@@ -7,10 +7,17 @@ def compute_log_p_avg(params, data, iterator):
     total = 0
     W = utils.extract_w(params)
     T = utils.extract_t(params)
+    # T = T.transpose()
+    # T_prime = utils.matricize_Tij(params)
+    # T_prime = np.swapaxes(T_prime, 0, 1)
+    # print(np.sum(T), np.sum(T_prime))
+    # print(np.array_equal(T, T_prime))
+    # print(np.sum(T))
 
     for i in range(iterator):
         crf_model = crf.crf(data[i][1], data[i][0], W, T)
         total += crf_model.compute_log_prob()
+        # print(crf_model.compute_log_prob())
 
     # print(total)
     return total / (iterator)
@@ -22,11 +29,16 @@ def grad_word(data, W, T, i):
     beta, tmp, message = crf_model.backward()
 
     denom = crf_model.compute_z(alpha)
+    # print(denom)
+    # print(beta)
 
-    w_grad = crf.w_grad(data[i][1], data[i][0], W, T, denom)
-    t_grad = crf.t_grad(data[i][1], data[i][0], W, T, denom)
-
+    w_grad = crf.w_grad(data[i][1], data[i][0], W, T, denom, alpha, beta)
+    t_grad = crf.t_grad(data[i][1], data[i][0], W, T, denom, alpha, beta)
+    # for i in w_grad.flatten():
+    #     print(i)
     # print(w_grad.shape, t_grad.shape)
+    # print(np.sum( w_grad ))
+
     return np.concatenate((w_grad.flatten(), t_grad.flatten()))
 
 
@@ -34,6 +46,8 @@ def gradient_avg(params, data, iterator):
     total = np.zeros(128 * 26 + 26 * 26)
     W = utils.extract_w(params)
     T = utils.extract_t(params)
+    # T = utils.matricize_Tij(params)
+    # T = np.swapaxes(T, 0, 1)
 
     for i in range(iterator):
         total += grad_word(data, W, T, i)

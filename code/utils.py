@@ -91,12 +91,30 @@ def load_model_params(filename):
 
 
 def extract_w(params):
-    return np.array(params[:26*128], dtype=float).reshape(26, 128)
+    return np.array(params[:26*128]).reshape(26, 128)
 
 
 def extract_t(params):
-    return np.array(params[26*128:], dtype=float).reshape(26, 26)
 
+    t = np.array(params[26*128:]).reshape(26, 26)
+    # print(t[25][25])
+    # print(params[26*128:].shape)
+    # for i in t:
+    #     print(np.sum(i))
+    t = np.swapaxes(t, 0, 1)
+    return t
+
+
+def matricize_Tij(params):
+    t_ij = np.zeros((26, 26))
+
+    index = 0
+    for i in range(26):
+        for j in range(26):
+            t_ij[j][i] = params[128 * 26 + index]
+            index += 1
+
+    return t_ij
 
 if __name__ == '__main__':
     train_data = read_data_seq('../data/train.txt')
