@@ -7,7 +7,7 @@ from scipy.optimize import fmin_bfgs
 import scipy.optimize as opt
 
 def read_data():
-    train_data = utils.read_data_seq('../data/train.txt')
+    train_data = utils.read_data_seq('../data/train_mini.txt')
     trainX, trainY = [], []
     for d in train_data:
         trainX.append(d[1])
@@ -46,7 +46,7 @@ def ref_optimize(train_data, test_data, c, params):
     start = time.time()
 
     # X, y = train_data[1], train_data[0]
-    result = opt.fmin_tnc(func, x0, fprime=func_prime, args = [train_data, c], maxfun=100,
+    result = opt.fmin_tnc(func, params, fprime=func_prime, args = [train_data, c], maxfun=100,
                           ftol=1e-3, disp=5)
     model  = result[0]
     # out = fmin_bfgs(func, params, func_prime, (train_data, c), disp=1)
