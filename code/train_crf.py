@@ -120,7 +120,7 @@ def word_letter_accuracy(y_preds, y_label):
 
 
 if __name__ == '__main__':
-    c = 10
+    c = 1000
 
     train_data, test_data, params = read_data()
     ref_optimize(train_data, test_data, c, params)
