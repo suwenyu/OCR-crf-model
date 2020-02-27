@@ -7,7 +7,7 @@ from scipy.optimize import fmin_bfgs
 import scipy.optimize as opt
 
 def read_data():
-    train_data = utils.read_data_seq('../data/train_mini.txt')
+    train_data = utils.read_data_seq('../data/train.txt')
     trainX, trainY = [], []
     for d in train_data:
         trainX.append(d[1])
@@ -120,7 +120,7 @@ def word_letter_accuracy(y_preds, y_label):
 
 
 if __name__ == '__main__':
-    c = 1000
+    c = 1
 
     train_data, test_data, params = read_data()
     ref_optimize(train_data, test_data, c, params)
