@@ -78,11 +78,45 @@ def test_model(test_data):
     T = utils.extract_t(params)
 
     y_preds = decode_test_data(test_data, W, T)
+    
+    #get y_label data from test_data
+    y_label = []
+    for d in test_data:
+        y_label.append(d[0])
+
+    #count word_letter_accuracy
+    word_acc, letter_acc = word_letter_accuracy(y_preds, y_label)
+
+    print("Letter Accuracy: ", letter_acc)
+    print("Word Accuracy: ", word_acc)
 
     f = open('../result/prediction.txt', 'w')
     for pred in y_preds:
         for word in pred:
             f.write(str(word+1) + "\n")
+
+def word_letter_accuracy(y_preds, y_label):
+    correct_word = 0.0
+    letter_count = 0.0
+    correct_letter = 0.0
+
+    for pred, label in zip(y_preds, y_label):
+        #print("compare: ", pred, label)
+        # count correct word
+        if(np.array_equal(pred, label)):
+            correct_word +=1
+
+        #count correct letter
+        for i in range(len(pred)):
+            letter_count+=1
+            if(pred[i]==label[i]):
+                correct_letter+=1
+                    
+
+    print("correct_letter: ", correct_letter ,"correct_word: ", correct_word )
+    print("letter: ", letter_count ,"word: ", len(y_preds) )
+
+    return correct_word/len(y_preds), correct_letter/letter_count
 
 
 if __name__ == '__main__':
