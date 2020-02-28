@@ -1,5 +1,5 @@
 import numpy as np
-import crf, utils, compute, check_grad
+import crf, utils, compute, check_grad, transform
 import time
 
 import max_sum_solution
@@ -55,7 +55,7 @@ def ref_optimize(train_data, test_data, c, params):
     print("Total time: ", end='')
     print(time.time() - start)
 
-    with open("../result/" + 'solution' + ".txt", "w") as text_file:
+    with open("../result/" + 'transform_crf' + ".txt", "w") as text_file:
         for i in model:
             text_file.write(str(i) + "\n")
 
@@ -123,15 +123,22 @@ def get_func_value(params, train_data, c):
 
 
 if __name__ == '__main__':
-    c = 1000
+    c = 100
 
     train_data, test_data, params = read_data()
-    ref_optimize(train_data, test_data, c, params)
+    train_new = transform.transform_data(train_data, 100)
+    # print(train_data[0])
+    # print(train_new[0])
 
-    test_model(test_data)
+    #ref_optimize(train_data, test_data, c, params)
+
+    #test_model(test_data)
     
-    params = utils.load_model_params('../result/solution_C500.txt')
-    get_func_value(params, train_data, c)
+    #params = utils.load_model_params('../result/solution_C500.txt')
+    #get_func_value(params, train_data, c)
+
+    #training transformed data
+
 
 
 

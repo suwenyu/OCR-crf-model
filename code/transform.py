@@ -56,7 +56,7 @@ def rotate(features, alpha):
     return img_binary.flatten()
 
 
-def transform_data(data, n):
+def transform_data(train_data, n):
     f = open('../data/transform.txt', 'r')
     trans_list = []
     for line in f:
@@ -82,6 +82,8 @@ def transform_data(data, n):
             new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]]
             train_data[_id][1] = new_img
 
+           
+    return train_data
             # print("translate")
             # translate()
         
@@ -92,6 +94,8 @@ if __name__ == "__main__":
     
     train_data = utils.read_data_seq('../data/train.txt')
     train_data_new = transform_data(train_data, 100)
+
+
 
     # X, Y = read_data()
     # #train_data = utils.read_data_seq('../data/train_mini.txt') 
