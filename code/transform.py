@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import utils,string
 import matplotlib.pyplot as mp
+import os
+from skimage.transform import rotate as rotatopotato
 
 from scipy import ndimage, misc
 import math
@@ -35,7 +37,8 @@ def rotate(features, alpha):
 
     X = features.reshape(16,8)
 
-    Y = misc.imrotate(X, 15)
+    # Y = misc.imrotate(X, 15)
+    Y = rotatopotato(X, 15)
     lenx1, lenx2 = X.shape;
     leny1, leny2 = Y.shape;
 
@@ -86,6 +89,7 @@ def transform_data(data, n):
 
 
 if __name__ == "__main__":
+    
     train_data = utils.read_data_seq('../data/train.txt')
     train_data_new = transform_data(train_data, 100)
 
