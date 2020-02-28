@@ -69,7 +69,7 @@ def transform_data(data, n):
             _id = trans_list[i][1]
 
             new_img = [rotate(j, int(trans_list[i][2][0])) for j in train_data[_id][1]]
-            train_data[_id][1] = new_img
+            train_data[_id-1][1] = new_img
 
             # print("rotate")
             # rotate()
@@ -77,18 +77,23 @@ def transform_data(data, n):
         elif trans_list[i][0] == 't':
             _id = trans_list[i][1]
             new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]]
-            train_data[_id][1] = new_img
+            train_data[_id-1][1] = new_img
 
             # print("translate")
             # translate()
+    return train_data
         
         
 
 
 if __name__ == "__main__":
     train_data = utils.read_data_seq('../data/train.txt')
-    train_data_new = transform_data(train_data, 100)
-
+    train_data_new = transform_data(train_data, 1000)
+    # for i, j in zip(train_data_new, train_data):
+        # print(i, j)
+        # for k, l in zip(train_data[i], new_train_data[j]):
+            # print(k, l)
+    # print(train_data_new)
     # X, Y = read_data()
     # #train_data = utils.read_data_seq('../data/train_mini.txt') 
 
