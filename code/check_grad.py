@@ -66,7 +66,8 @@ def check_gradient(data, params):
 
 def grad_measurement(data, params):
     start = time.time()
-    grad_avg = gradient_avg(params, data, len(data[1]))
+    grad_avg = gradient_avg(params, data, len(data))
+    # print(grad_avg)
     print("Computation Time: ", time.time()-start)
     #print(np.array(grad_avg).shape)
 
@@ -81,7 +82,7 @@ if __name__ == "__main__":
 
     data = utils.read_data_seq('../data/train.txt')
     params = utils.load_model_params('../data/model.txt')
-    # print(params.shape)
+    # print(params)
 
     # crf_model = crf.crf(X, Y, W, T)
     print("check gradient ... ")
