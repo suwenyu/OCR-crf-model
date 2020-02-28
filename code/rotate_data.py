@@ -23,25 +23,26 @@ for i in range(0,16):
 total_features = np.array(total_features)
 
 file_name = "image.jpg" 
-plt.imsave(file_name,total_features, cmap='binary') #save the features as an image
-img = cv2.imread(file_name, 0) #read the image back 
+plt.imsave(file_name,total_features, cmap="Greys") #save the features as an image
+img = cv2.imread(file_name, 0) #read the image back in grey scale
+img_binary = cv2.threshold(img, 128,255, cv2.THRESH_BINARY)[1]
 cols,rows = img.shape
 
 #this shows image "img"
-# plt.imshow(img)
-# plt.show()
+plt.imshow(img_binary)
+plt.show()
 
 degree = 90 #degree we want to rotate and test by
 matrix = cv2.getRotationMatrix2D((rows/2, cols/2),degree,1) #get the rotational matrix
-destination = cv2.warpAffine(img, matrix, (rows,cols)) #apply the rotation matrix to the image
+destination = cv2.warpAffine(img_binary, matrix, (rows,cols)) #apply the rotation matrix to the image
 
-# plt.imshow(destination) #sets up the picture to image
-# plt.show() #shows the new image
+plt.imshow(destination) #sets up the picture to image
+plt.show() #shows the new image
 
-# print(img.shape)
-print(total_features)
+# print(img)
+# print(total_features)
+print(img_binary)
 print(destination)
-# print(destination)
 
 #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    
 
