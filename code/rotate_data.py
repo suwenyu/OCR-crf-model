@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 
-#this rotates the TRAINING DATA
+#PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    
 training_data = open("train.txt","r").readlines()
 
 # gets a specific line
@@ -36,7 +36,7 @@ plt.imshow(destination)
 # plt.show()
 
 print(img.shape)
-
+#PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    
 # ________________________________________________________________________________________________________________________
 #takes in the transform file, and a list
 #returns the transform text in the form of a list that is ordered by the word number
