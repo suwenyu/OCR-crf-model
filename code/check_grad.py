@@ -1,5 +1,6 @@
 import numpy as np
 import crf, utils, compute
+import time
 
 from scipy.optimize import check_grad
 
@@ -63,6 +64,19 @@ def check_gradient(data, params):
     print("Gradient Value:", grad_value)
 
 
+def grad_measurement(data, params):
+    start = time.time()
+    grad_avg = gradient_avg(params, data, len(data[1]))
+    print("Computation Time: ", time.time()-start)
+    #print(np.array(grad_avg).shape)
+
+    # write to gradient.txt
+    f = open('../result/gradient.txt', 'w')
+    for index in grad_avg:
+        #print(index)
+        f.write(str(index)+"\n")
+
+
 if __name__ == "__main__":
 
     data = utils.read_data_seq('../data/train.txt')
@@ -72,3 +86,7 @@ if __name__ == "__main__":
     # crf_model = crf.crf(X, Y, W, T)
     print("check gradient ... ")
     check_gradient(data, params)
+
+    print("write to file...")
+    grad_measurement(data, params)
+    print('completed in ../result/gradient.txt')
