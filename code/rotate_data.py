@@ -1,10 +1,12 @@
 import cv2
 import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
 
 #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    
-training_data = open("train.txt","r").readlines()
+training_data = open("train.txt","r").readlines() #grab training data
 
-# gets a specific line
+# gets a specific line to test on, with actual letter "k"
 line_number = 1
 specific_line = training_data[line_number].strip("\n").split(" ")
 features = specific_line[5:]
@@ -17,26 +19,32 @@ for i in range(0,16):
         feature_line.append(int(features[8*i+j]))
     total_features.append(feature_line)
 
-#show the original image
-# plt.matshow(total_features)
+#turn total features to an np.array
+total_features = np.array(total_features)
+
+file_name = "image.jpg" 
+plt.imsave(file_name,total_features, cmap='binary') #save the features as an image
+img = cv2.imread(file_name, 0) #read the image back 
+cols,rows = img.shape
+
+#this shows image "img"
+# plt.imshow(img)
 # plt.show()
 
-#APPLY ROTATION
-file_name = "image.jpg"
-plt.imsave(file_name,total_features, cmap="Greys")
-img = cv2.imread(file_name)
-cols,rows,ch = img.shape
+degree = 90 #degree we want to rotate and test by
+matrix = cv2.getRotationMatrix2D((rows/2, cols/2),degree,1) #get the rotational matrix
+destination = cv2.warpAffine(img, matrix, (rows,cols)) #apply the rotation matrix to the image
 
-degree = 180
-matrix = cv2.getRotationMatrix2D((rows/2, cols/2),degree,1)
-destination = cv2.warpAffine(img, matrix, (rows,cols))
+# plt.imshow(destination) #sets up the picture to image
+# plt.show() #shows the new image
 
-# plt.imsave(file_name, destination)
-plt.imshow(destination)
-# plt.show()
+# print(img.shape)
+print(total_features)
+print(destination)
+# print(destination)
 
-print(img.shape)
 #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    #PRACTICING HERE    
+
 # ________________________________________________________________________________________________________________________
 #takes in the transform file, and a list
 #returns the transform text in the form of a list that is ordered by the word number
@@ -63,8 +71,8 @@ sort_transform_txt("transform.txt", sorted_transform_text)
 
 #proof this is working
 # print(sorted_transform_text[:3])
-
 # ________________________________________________________________________________________________________________________
+
 #this tranforms the training data
 training_data = open("train.txt","r").readlines()
 training_line = 0
@@ -94,10 +102,4 @@ training_line = 0
 #                     feature_line.append(int(features[8*i+j]))
 #                 total_features.append(feature_line)
 
-#             file_name = "image.jpg"
-#             plt.imsave(file_name,total_features)
-#             img = cv2.imread(file_name)
-#             cols,rows,ch = img.shape
-
-#             matrix = cv2.getRotationMatrix2D((rows/2, cols/2),rotation_degrees,1)
-#             destination = cv2.warpAffine(img, matrix, (rows,cols))
+            #UPDATE WITH CODE ABOVE WHEN IT IS WORKING
