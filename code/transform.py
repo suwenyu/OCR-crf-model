@@ -23,7 +23,7 @@ def translate(features, tx, ty):
     features = features.reshape(16, 8)
     
     lenX, lenY = features.shape
-    translated = np.zeros((lenX, lenY), features.dtype)
+    #translated = np.zeros((lenX, lenY), features.dtype)
 
     M = np.float32([[1,0,tx],[0,1,ty]])
     dst = cv2.warpAffine(features,M,(lenY,lenX))
@@ -56,7 +56,7 @@ def rotate(features, alpha):
     return img_binary.flatten()
 
 
-def transform_data(data, n):
+def transform_data(train_data, n):
     f = open('../data/transform.txt', 'r')
     trans_list = []
     for line in f:
@@ -71,17 +71,21 @@ def transform_data(data, n):
         if trans_list[i][0] == 'r':
             _id = trans_list[i][1]
 
-            new_img = [rotate(j, int(trans_list[i][2][0])) for j in train_data[_id][1]]
-            train_data[_id][1] = new_img
+            new_img = [rotate(j, int(trans_list[i][2][0])) for j in train_data[_id-1][1]]
+            train_data[_id-1][1] = np.array(new_img)
 
             # print("rotate")
             # rotate()
         
-        elif trans_list[i][0] == 't':
+        elif trans_list[i][0] == 't': 
             _id = trans_list[i][1]
-            new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]]
-            train_data[_id][1] = new_img
+            if(len(trans_list[i][2])<2):
+                print('errrrorr', trans_list)
+            new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id-1][1]]
+            train_data[_id-1][1] = np.array(new_img)
 
+
+    return train_data
             # print("translate")
             # translate()
         
@@ -91,7 +95,11 @@ def transform_data(data, n):
 if __name__ == "__main__":
     
     train_data = utils.read_data_seq('../data/train.txt')
-    train_data_new = transform_data(train_data, 100)
+    print(len(train_data))
+    #length = len(train_data)
+    train_data_new = transform_data(train_data, 1000)
+
+
 
     # X, Y = read_data()
     # #train_data = utils.read_data_seq('../data/train_mini.txt') 
