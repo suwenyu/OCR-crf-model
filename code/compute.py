@@ -17,7 +17,7 @@ def comput_prob(x, y, W, T):
 
     for i in range(len(x)-1):
         sum_val += np.dot(x[i, :], W[y[i], :])
-        sum_val += T[y[i+1], y[i]]
+        sum_val += T[y[i], y[i+1]]
 
     n = len(x)-1
     sum_val += np.dot(x[n, :], W[y[n], :])

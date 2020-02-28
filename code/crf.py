@@ -20,7 +20,7 @@ class crf:
 
         # equation (13)
         for i in range(1, self.n):
-            tmp = alpha[i - 1] + self.T
+            tmp = alpha[i - 1] + self.T.transpose()
             tmp_max = np.max(tmp, axis=1)
 
             tmp = (tmp.transpose() - tmp_max).transpose()
@@ -53,7 +53,7 @@ class crf:
 
         # print(w_x)
         for i in range(self.n-2, -1, -1):
-            tmp = beta[i + 1] + self.T.transpose()
+            tmp = beta[i + 1] + self.T
 
             tmp_max = np.max(tmp, axis=1)
             tmp = (tmp.transpose() - tmp_max).transpose()
@@ -83,13 +83,13 @@ class crf:
 
     def compute_z(self, alpha):
         # equation (14)
-        # tmp = np.add(np.matmul(self.W, self.X[-1]), alpha[-1])
-        # M = np.max(tmp)
-        # log_z = M + math.log(np.sum(np.exp(np.add(tmp, -1*M))))
+        tmp = np.add(np.matmul(self.W, self.X[-1]), alpha[-1])
+        M = np.max(tmp)
+        log_z = M + math.log(np.sum(np.exp(np.add(tmp, -1*M))))
         # print(np.exp(log_z))
 
-        # return np.exp(log_z)
-        return np.sum(np.exp(alpha[-1] + np.dot(self.X, self.W.T)[-1]))
+        return np.exp(log_z)
+        # return np.sum(np.exp(alpha[-1] + np.dot(self.X, self.W.T)[-1]))
 
     # checked
     def compute_log_prob(self):
@@ -158,7 +158,7 @@ def t_grad(X, Y, W, T, denom, alpha, beta):
         for j in range(26):
             tmp1 = np.dot(X[i+1, :], W[j, :])
 
-            grad[j] -= np.exp(tmp + T[j] + tmp1 + beta[i + 1][j] + alpha[i])
+            grad[j] -= np.exp(tmp + T.transpose()[j] + tmp1 + beta[i + 1][j] + alpha[i])
             
 
     # print(grad)

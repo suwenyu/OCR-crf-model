@@ -86,10 +86,11 @@ def sort_transform_txt(transform_text, to_return_ordered):
 
 #this is the actual sorting of the transform
 sorted_transform_text = []
-sort_transform_txt("transform.txt", sorted_transform_text)
+sort_transform_txt("../data/transform.txt", sorted_transform_text)
 
 #proof this is working
-# print(sorted_transform_text[:3])
+print(sorted_transform_text[:3])
+print(aaa)
 # ________________________________________________________________________________________________________________________
 
 if os.path.exists('new_train.txt'):
