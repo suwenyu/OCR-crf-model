@@ -33,11 +33,11 @@ if __name__ == "__main__":
     label, features = utils.read_data_struct()
 
     letters = [i for i in range(0, 26)]
-    
-    m = 5
+
+    m = 3
     permuts = find_permutations(letters, m)
-    
-    print(find_max(features[:5], permuts, W, T))
+
+    print(find_max(features[:3], permuts, W, T))
 
 
 

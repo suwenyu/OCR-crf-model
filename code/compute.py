@@ -13,17 +13,15 @@ def compute_probability(x, y, W, T):
     return w_sum + t_sum
 
 def comput_prob(x, y, W, T):
-    w_x = np.dot(x, W.T)
-
     sum_val, t_sum = 0, 0
 
-    for i in range(len(x)):
-        sum_val += w_x[i][y[i]]
+    for i in range(len(x)-1):
+        sum_val += np.dot(x[i, :], W[y[i], :])
+        sum_val += T[y[i+1], y[i]]
 
-        if (i > 0):
-            # t stored as T{current, prev}
-            sum_val += T[y[i - 1]][y[i]]
-    # print(sum_val)
+    n = len(x)-1
+    sum_val += np.dot(x[n, :], W[y[n], :])
+
     return np.exp(sum_val)
 
 

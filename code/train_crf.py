@@ -118,14 +118,20 @@ def word_letter_accuracy(y_preds, y_label):
 
     return correct_word/len(y_preds), correct_letter/letter_count
 
+def get_func_value(params, train_data, c):
+    print("function value: ", func(params, train_data, c))
+
 
 if __name__ == '__main__':
-    c = 1
+    c = 1000
 
     train_data, test_data, params = read_data()
     ref_optimize(train_data, test_data, c, params)
 
     test_model(test_data)
+    
+    params = utils.load_model_params('../result/solution_C500.txt')
+    get_func_value(params, train_data, c)
 
 
 

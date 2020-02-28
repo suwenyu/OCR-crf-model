@@ -1,5 +1,5 @@
 import numpy as np
-import crf, utils, compute
+import crf, utils, compute, train_crf
 import time
 
 from scipy.optimize import check_grad
@@ -55,6 +55,7 @@ def gradient_avg(params, data, iterator):
     
     # for i in total:
     #     print(i)
+    # print(total)
     return total / (iterator)
 
 
@@ -80,7 +81,7 @@ def grad_measurement(data, params):
 
 if __name__ == "__main__":
 
-    data = utils.read_data_seq('../data/train.txt')
+    data = utils.read_data_seq('../data/train_mini.txt')
     params = utils.load_model_params('../data/model.txt')
     # print(params)
 
@@ -88,6 +89,6 @@ if __name__ == "__main__":
     print("check gradient ... ")
     check_gradient(data, params)
 
-    print("write to file...")
+    print("write gradient to file...")
     grad_measurement(data, params)
     print('completed in ../result/gradient.txt')

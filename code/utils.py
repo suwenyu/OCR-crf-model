@@ -101,7 +101,7 @@ def extract_t(params):
     # print(params[26*128:].shape)
     # for i in t:
     #     print(np.sum(i))
-    t = np.swapaxes(t, 0, 1)
+    # t = np.swapaxes(t, 0, 1)
     return t
 
 
