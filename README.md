@@ -15,6 +15,7 @@ $ python3 --version
 > version >= 3.5
 
 $ pip3 install numpy scipy
+$ pip3 install -U scikit-learn
 ```
 
 ### Run the program
@@ -61,6 +62,12 @@ $ python3 ref_optimize.py
 ```
 It would store the params into the "solution.txt" file and also make the prediction of the test.txt under the "prediction.txt" file
 
+#### 3(a) and 3(b)
+```bash
+$ python3 parser.py
+```
+Running parser.py file will run both svm-hmm and svm-mc with varying c values, with doubling powers of 2. Additionally, parser.py will print out related graphs, which can be saved. Runtime is approximately 30 minutes for each svm model.
+
 
 ##### Todo List
 - [X] 1(a)
@@ -77,4 +84,5 @@ It would store the params into the "solution.txt" file and also make the predict
 
 - [X] 4(a) write rotate and translation (crf, and svm)
 - [X] 4(b) robustness, and plot them
+
 
