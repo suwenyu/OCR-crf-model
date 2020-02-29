@@ -78,7 +78,7 @@ def transform_data(train_data, n):
         
         elif trans_list[i][0] == 't': 
             _id = trans_list[i][1]
-<<<<<<< HEAD
+
             # print(_id)
             # for j in train_data[_id-1][1]:
                 # print(j)
@@ -86,13 +86,7 @@ def transform_data(train_data, n):
             # print([ (int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]])
             new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id-1][1]]
             train_data[_id-1][1] = np.array(new_img)
-=======
-            if(len(trans_list[i][2])<2):
-                print('errrrorr', trans_list)
-            new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id-1][1]]
-            train_data[_id-1][1] = np.array(new_img)
 
->>>>>>> e0be80dd5a1c669aae5e9e58fa51cef928b34426
 
     return train_data
             # print("translate")
@@ -104,12 +98,6 @@ def transform_data(train_data, n):
 if __name__ == "__main__":
     
     train_data = utils.read_data_seq('../data/train.txt')
-<<<<<<< HEAD
-=======
-    print(len(train_data))
-    #length = len(train_data)
-    train_data_new = transform_data(train_data, 1000)
->>>>>>> e0be80dd5a1c669aae5e9e58fa51cef928b34426
 
 
     train_data_new = transform_data(train_data, 1000)

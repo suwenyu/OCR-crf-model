@@ -57,24 +57,24 @@ $ vim ../result/graduent.txt
 ```bash
 $ python3 ref_optimize.py
 
-> Word Accuracy = 0.0956673451584763, Letter Accuracy = 0.5824872127643331.
+> Word Accuracy = 0.46932247746437916 , Letter Accuracy = 0.8345675242384915.
 ```
 It would store the params into the "solution.txt" file and also make the prediction of the test.txt under the "prediction.txt" file
 
 
 ##### Todo List
-- [ ] 1(a)
-- [ ] 1(b)
+- [X] 1(a)
+- [X] 1(b)
 - [X] 1(c) write brute force and dp decoder.
 
 - [X] 2(a) check w and t gradient, and some dp.
 - [X] 2(b) train the crf (call 2(a) func)
 - [X] 2 save params and w, t into files
 
-- [ ] 3(a) write the plot func(given X, test-acc, word-acc)
-- [ ] 3(a) plot svm-mc, svm-hmm, crf
-- [ ] 3(b) produce another three plots for word-wise prediction
+- [X] 3(a) write the plot func(given X, test-acc, word-acc)
+- [X] 3(a) plot svm-mc, svm-hmm, crf
+- [X] 3(b) produce another three plots for word-wise prediction
 
-- [ ] 4(a) write rotate and translation (crf, and svm)
-- [ ] 4(b) robustness, and plot them
+- [X] 4(a) write rotate and translation (crf, and svm)
+- [X] 4(b) robustness, and plot them
 

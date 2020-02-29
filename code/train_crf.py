@@ -126,7 +126,7 @@ if __name__ == '__main__':
     c = 10
 
     train_data, test_data, params = read_data()
-    train_new = transform.transform_data(train_data, 1000)
+    # train_new = transform.transform_data(train_data, 1000)
     # print(train_data[0])
     # print(train_new[0])
 
@@ -135,11 +135,13 @@ if __name__ == '__main__':
     #ref_optimize(train_new, test_data, c, params)
 
 
-    test_model(test_data)
+    # test_model(test_data)
     
     #get_func_value(params, train_data, c)
 
-    #training transformed data
+    params = utils.load_model_params('../result/solution_C1000.txt')
+    print("Function value: ", func(params, train_data, c))
+
 
 
 

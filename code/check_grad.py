@@ -68,7 +68,8 @@ def check_gradient(data, params):
 def grad_measurement(data, params):
     start = time.time()
     grad_avg = gradient_avg(params, data, len(data))
-    # print(grad_avg)
+    
+    # print("log_p_avg: ", compute_log_p_avg(params, data, len(data)))
     print("Computation Time: ", time.time()-start)
     #print(np.array(grad_avg).shape)
 
@@ -92,3 +93,5 @@ if __name__ == "__main__":
     print("write gradient to file...")
     grad_measurement(data, params)
     print('completed in ../result/gradient.txt')
+
+    
