@@ -1,0 +1,16 @@
+c = 1000
+len = 0
+Letter Accuracy:  0.8345675242384915
+Word Accuracy:  0.46932247746437916
+len = 500
+Letter Accuracy:  0.8001755859225895
+Word Accuracy:  0.40098865949403895
+len = 1000
+Letter Accuracy:  0.7839148026566913
+Word Accuracy:  0.36493166618202966
+len = 1500
+Letter Accuracy:  0.7691045117947934
+Word Accuracy:  0.34457691189299217
+len = 2000
+Letter Accuracy:  0.7485304221696313
+Word Accuracy:  0.3102646118057575 
