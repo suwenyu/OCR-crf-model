@@ -39,7 +39,7 @@ def func_prime(params, data, c):
     return -c * loss_gradient + l2_gradient
 
 
-def ref_optimize(train_data, test_data, c, params, filename):
+def ref_optimize(train_data, test_data, c, params):
     print('Training CRF ... c = {} \n'.format(c))
     x0 = np.zeros((128*26+26**2,1))
 
@@ -55,8 +55,8 @@ def ref_optimize(train_data, test_data, c, params, filename):
     print("Total time: ", end='')
     print(time.time() - start)
 
-    with open("../result/" + filename + ".txt", "w") as text_file:
-    #with open("../result/" + 'solution' + ".txt", "w") as text_file:
+    #with open("../result/" + filename + ".txt", "w") as text_file:
+    with open("../result/" + 'solution' + ".txt", "w") as text_file:
         for i in model:
             text_file.write(str(i) + "\n")
 
@@ -73,8 +73,8 @@ def decode_test_data(test_data, W, T):
     return preds
 
 
-def test_model(i,test_data,filename):
-    params = utils.load_model_params('../result/'+filename+'.txt')
+def test_model(test_data):
+    params = utils.load_model_params('../result/solution.txt')
     W = utils.extract_w(params)
     T = utils.extract_t(params)
 
@@ -91,12 +91,11 @@ def test_model(i,test_data,filename):
     print("Letter Accuracy: ", letter_acc)
     print("Word Accuracy: ", word_acc)
 
-    output = 'prediction_transformed'+str(i)
+    output = 'prediction_transformed'
     f = open('../result/'+output+'.txt', 'w')
     for pred in y_preds:
         for word in pred:
             f.write(str(word+1) + "\n")
-    return letter_acc, word_acc
 
 def word_letter_accuracy(y_preds, y_label):
     correct_word = 0.0
@@ -137,9 +136,12 @@ if __name__ == '__main__':
     for i in length:
         filename = 'solution_transformed'+str(i)
         train_new = transform.transform_data(train_data, i)
-        ref_optimize(train_new, test_data, c, params, filename)
-        test_model(i, test_data, filename)
+        ref_optimize(train_new, test_data, c, params)
+        test_model(test_data)
 
+    # train_new = transform.transform_data(train_data, 1000)
+    # print(train_data[0])
+    # print(train_new[0])
 
     #params = utils.load_model_params('../data/model.txt')
 
@@ -147,6 +149,12 @@ if __name__ == '__main__':
         
     #get_func_value(params, train_data, c)
 
+    # test_model(test_data)
+    
+    #get_func_value(params, train_data, c)
+
+    params = utils.load_model_params('../result/solution_C1000.txt')
+    print("Function value: ", func(params, train_data, c))
 
 
 

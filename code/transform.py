@@ -66,7 +66,6 @@ def transform_data(train_data, n):
             trans_list.append([line_list[0], int(line_list[1]), line_list[2:]])
     f.close()
     # print(trans_list)
-
     for i in range(n):
         if trans_list[i][0] == 'r':
             _id = trans_list[i][1]
@@ -79,8 +78,12 @@ def transform_data(train_data, n):
         
         elif trans_list[i][0] == 't': 
             _id = trans_list[i][1]
-            if(len(trans_list[i][2])<2):
-                print('errrrorr', trans_list)
+
+            # print(_id)
+            # for j in train_data[_id-1][1]:
+                # print(j)
+            # print([ trans_list[i] for j in train_data[_id][1]])
+            # print([ (int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]])
             new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id-1][1]]
             train_data[_id-1][1] = np.array(new_img)
 
@@ -95,11 +98,17 @@ def transform_data(train_data, n):
 if __name__ == "__main__":
     
     train_data = utils.read_data_seq('../data/train.txt')
-    print(len(train_data))
-    #length = len(train_data)
+
+
     train_data_new = transform_data(train_data, 1000)
-
-
+    for i, j in zip(train_data_new, train_data):
+        # print(i, j)
+        for k, l in zip(i, j):
+        #     # print(k)
+        #     # print(k.shape)
+            if k.shape != l.shape:
+                print(k)
+    # print(train_data_new)
 
     # X, Y = read_data()
     # #train_data = utils.read_data_seq('../data/train_mini.txt') 
