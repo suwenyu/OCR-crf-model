@@ -61,6 +61,12 @@ $ python3 ref_optimize.py
 ```
 It would store the params into the "solution.txt" file and also make the prediction of the test.txt under the "prediction.txt" file
 
+#### 3(a) and 3(b)
+```bash
+$ python3 parser.py
+```
+Running parser.py file will run both svm-hmm and svm-mc with varying c values, with doubling powers of 2. Additionally, parser.py will print out related graphs, which can be saved. Runtime is approximately 30 minutes for each svm model.
+
 
 ##### Todo List
 - [ ] 1(a)
@@ -71,10 +77,10 @@ It would store the params into the "solution.txt" file and also make the predict
 - [X] 2(b) train the crf (call 2(a) func)
 - [X] 2 save params and w, t into files
 
-- [ ] 3(a) write the plot func(given X, test-acc, word-acc)
-- [ ] 3(a) plot svm-mc, svm-hmm, crf
-- [ ] 3(b) produce another three plots for word-wise prediction
+- [x] 3(a) write the plot func(given X, test-acc, word-acc)
+- [x] 3(a) plot svm-mc, svm-hmm, crf
+- [x] 3(b) produce another three plots for word-wise prediction
 
-- [ ] 4(a) write rotate and translation (crf, and svm)
+- [x] 4(a) write rotate and translation (crf, and svm)
 - [ ] 4(b) robustness, and plot them
 
