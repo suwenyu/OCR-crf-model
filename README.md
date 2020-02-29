@@ -15,6 +15,7 @@ $ python3 --version
 > version >= 3.5
 
 $ pip3 install numpy scipy
+$ pip3 install -U scikit-learn
 ```
 
 ### Run the program
