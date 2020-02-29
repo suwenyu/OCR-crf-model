@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import utils,string
 import matplotlib.pyplot as mp
+import os
+from skimage.transform import rotate as rotatopotato
 
 from scipy import ndimage, misc
 import math
@@ -35,7 +37,8 @@ def rotate(features, alpha):
 
     X = features.reshape(16,8)
 
-    Y = misc.imrotate(X, 15)
+    # Y = misc.imrotate(X, 15)
+    Y = rotatopotato(X, 15)
     lenx1, lenx2 = X.shape;
     leny1, leny2 = Y.shape;
 
@@ -53,7 +56,7 @@ def rotate(features, alpha):
     return img_binary.flatten()
 
 
-def transform_data(data, n):
+def transform_data(train_data, n):
     f = open('../data/transform.txt', 'r')
     trans_list = []
     for line in f:
@@ -63,37 +66,49 @@ def transform_data(data, n):
             trans_list.append([line_list[0], int(line_list[1]), line_list[2:]])
     f.close()
     # print(trans_list)
-
     for i in range(n):
         if trans_list[i][0] == 'r':
             _id = trans_list[i][1]
 
-            new_img = [rotate(j, int(trans_list[i][2][0])) for j in train_data[_id][1]]
-            train_data[_id-1][1] = new_img
+            new_img = [rotate(j, int(trans_list[i][2][0])) for j in train_data[_id-1][1]]
+            train_data[_id-1][1] = np.array(new_img)
 
             # print("rotate")
             # rotate()
         
         elif trans_list[i][0] == 't':
             _id = trans_list[i][1]
-            new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]]
-            train_data[_id-1][1] = new_img
+            # print(_id)
+            # for j in train_data[_id-1][1]:
+                # print(j)
+            # print([ trans_list[i] for j in train_data[_id][1]])
+            # print([ (int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id][1]])
+            new_img = [translate(j, int(trans_list[i][2][0]), int(trans_list[i][2][1])) for j in train_data[_id-1][1]]
+            train_data[_id-1][1] = np.array(new_img)
 
+           
+    return train_data
             # print("translate")
             # translate()
-    return train_data
         
         
 
 
 if __name__ == "__main__":
+    
     train_data = utils.read_data_seq('../data/train.txt')
+
+
     train_data_new = transform_data(train_data, 1000)
-    # for i, j in zip(train_data_new, train_data):
+    for i, j in zip(train_data_new, train_data):
         # print(i, j)
-        # for k, l in zip(train_data[i], new_train_data[j]):
-            # print(k, l)
+        for k, l in zip(i, j):
+        #     # print(k)
+        #     # print(k.shape)
+            if k.shape != l.shape:
+                print(k)
     # print(train_data_new)
+
     # X, Y = read_data()
     # #train_data = utils.read_data_seq('../data/train_mini.txt') 
 
