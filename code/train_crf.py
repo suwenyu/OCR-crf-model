@@ -39,7 +39,7 @@ def func_prime(params, data, c):
     return -c * loss_gradient + l2_gradient
 
 
-def ref_optimize(train_data, test_data, c, params):
+def ref_optimize(train_data, test_data, c, params, filename):
     print('Training CRF ... c = {} \n'.format(c))
     x0 = np.zeros((128*26+26**2,1))
 
@@ -55,7 +55,8 @@ def ref_optimize(train_data, test_data, c, params):
     print("Total time: ", end='')
     print(time.time() - start)
 
-    with open("../result/" + 'transform_crf' + ".txt", "w") as text_file:
+    with open("../result/" + filename + ".txt", "w") as text_file:
+    #with open("../result/" + 'solution' + ".txt", "w") as text_file:
         for i in model:
             text_file.write(str(i) + "\n")
 
@@ -72,8 +73,8 @@ def decode_test_data(test_data, W, T):
     return preds
 
 
-def test_model(test_data):
-    params = utils.load_model_params('../result/transform_crf.txt')
+def test_model(i,test_data,filename):
+    params = utils.load_model_params('../result/'+filename+'.txt')
     W = utils.extract_w(params)
     T = utils.extract_t(params)
 
@@ -90,10 +91,12 @@ def test_model(test_data):
     print("Letter Accuracy: ", letter_acc)
     print("Word Accuracy: ", word_acc)
 
-    f = open('../result/prediction.txt', 'w')
+    output = 'prediction_transformed'+str(i)
+    f = open('../result/'+output+'.txt', 'w')
     for pred in y_preds:
         for word in pred:
             f.write(str(word+1) + "\n")
+    return letter_acc, word_acc
 
 def word_letter_accuracy(y_preds, y_label):
     correct_word = 0.0
@@ -123,22 +126,28 @@ def get_func_value(params, train_data, c):
 
 
 if __name__ == '__main__':
-    c = 10
+
+    #c = [1, 10, 50, 100, 500, 1000]
+    c = 1000
 
     train_data, test_data, params = read_data()
-    train_new = transform.transform_data(train_data, 1000)
-    # print(train_data[0])
-    # print(train_new[0])
+
+    length =[0, 500, 1000, 1500, 2000]
+
+    for i in length:
+        filename = 'solution_transformed'+str(i)
+        train_new = transform.transform_data(train_data, i)
+        ref_optimize(train_new, test_data, c, params, filename)
+        test_model(i, test_data, filename)
+
 
     #params = utils.load_model_params('../data/model.txt')
-    
-    #ref_optimize(train_new, test_data, c, params)
 
-    test_model(test_data)
-    
+
+        
     #get_func_value(params, train_data, c)
 
-    #training transformed data
+
 
 
 
