@@ -1,12 +1,12 @@
-# aml2020s_assign1 - Graphical Models
+# Graphical Model for Optical Character Recognition Problem
 
 ### Description
 
-In this part, you will implement a conditional random field for optical character recognition (OCR), with emphasis on inference and performance test.
+We implemented a conditional random field for optical character recognition (OCR), with emphasis on inference and performance test. 
 
 
 ### Dataset
-The original dataset is downloaded from http://www.seas.upenn.edu/∼taskar/ocr. 
+The original dataset is downloaded from http://www.seas.upenn.edu/∼taskar/ocr. It contains the image and label of 6,877 words collected from 150 human subjects, with 52,152 letters in total. To simplify feature engineering, each letter image is encoded by a 128 (=16*8) dimensional vector, whose entries are either 0 (black) or 1 (white).
 
 
 ### Environments and Required Packages
@@ -67,22 +67,5 @@ It would store the params into the "solution.txt" file and also make the predict
 $ python3 parser.py
 ```
 Running parser.py file will run both svm-hmm and svm-mc with varying c values, with doubling powers of 2. Additionally, parser.py will print out related graphs, which can be saved. Runtime is approximately 30 minutes for each svm model.
-
-
-##### Todo List
-- [X] 1(a)
-- [X] 1(b)
-- [X] 1(c) write brute force and dp decoder.
-
-- [X] 2(a) check w and t gradient, and some dp.
-- [X] 2(b) train the crf (call 2(a) func)
-- [X] 2 save params and w, t into files
-
-- [X] 3(a) write the plot func(given X, test-acc, word-acc)
-- [X] 3(a) plot svm-mc, svm-hmm, crf
-- [X] 3(b) produce another three plots for word-wise prediction
-
-- [X] 4(a) write rotate and translation (crf, and svm)
-- [X] 4(b) robustness, and plot them
 
 
